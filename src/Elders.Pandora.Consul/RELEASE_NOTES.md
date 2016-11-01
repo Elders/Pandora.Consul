@@ -1,3 +1,6 @@
+#### 0.5.0-beta0005 - 01.11.2016
+* Tests against consul
+
 #### 0.5.0-beta0004 - 01.11.2016
 * Makes all keys lower cased
 
