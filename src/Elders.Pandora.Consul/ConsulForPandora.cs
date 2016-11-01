@@ -7,13 +7,14 @@ namespace Elders.Pandora
 {
     public class ConsulForPandora : IConfigurationRepository
     {
-        readonly ConsulClientConfiguration cfg;
+        readonly Func<IConsulClient> getClient;
 
-        public ConsulForPandora() : this(new ConsulClientConfiguration()) { }
-
-        public ConsulForPandora(ConsulClientConfiguration cfg)
+        public ConsulForPandora(Uri address = null)
         {
-            this.cfg = cfg;
+            getClient = () => new ConsulClient(cfg =>
+            {
+                cfg.Address = address ?? cfg.Address;
+            });
         }
 
         public void Delete(string key)
@@ -21,7 +22,7 @@ namespace Elders.Pandora
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
 
             string normalizedKey = key.ToLower();
-            using (var client = new ConsulClient((conf) => conf = this.cfg))
+            using (var client = getClient())
             {
                 var getAttempt = client.KV.Delete(normalizedKey)?.Result;
                 if (getAttempt.StatusCode != System.Net.HttpStatusCode.OK)
@@ -33,7 +34,7 @@ namespace Elders.Pandora
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
             string normalizedKey = key.ToLower();
-            using (var client = new ConsulClient((conf) => conf = this.cfg))
+            using (var client = getClient())
             {
                 var getAttempt = client.KV.Get(normalizedKey)?.Result;
                 if (getAttempt.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -55,7 +56,7 @@ namespace Elders.Pandora
             if (string.IsNullOrEmpty(value)) throw new ArgumentException(nameof(value));
 
             string normalizedKey = key.ToLower();
-            using (var client = new ConsulClient((conf) => conf = this.cfg))
+            using (var client = getClient())
             {
                 var putPair = new KVPair(normalizedKey)
                 {
@@ -63,9 +64,8 @@ namespace Elders.Pandora
                 };
 
                 var putAttempt = client.KV.Put(putPair).Result;
-
                 if (putAttempt.Response == false || putAttempt.StatusCode != System.Net.HttpStatusCode.OK)
-                    throw new KeyNotFoundException("Unable to store value for key: " + normalizedKey);
+                    throw new KeyNotFoundException("Unable to store key/value: " + normalizedKey + "  " + value);
             }
         }
     }
