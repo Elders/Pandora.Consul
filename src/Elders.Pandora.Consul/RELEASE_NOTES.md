@@ -1,3 +1,6 @@
+#### 0.5.0-beta0003 - 01.11.2016
+* Fixes consul check
+
 #### 0.5.0-beta0002 - 01.11.2016
 * Properly build nuget package
 

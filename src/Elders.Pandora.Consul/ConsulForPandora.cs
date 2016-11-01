@@ -54,7 +54,7 @@ namespace Elders.Pandora
 
                     var putAttempt = client.KV.Put(putPair).Result;
 
-                    if (putAttempt.Response)
+                    if (putAttempt.Response == false)
                         throw new KeyNotFoundException("Unable to set consul value for key: " + key);
                 }
             }
