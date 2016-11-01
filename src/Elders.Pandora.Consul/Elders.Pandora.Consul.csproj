@@ -7,8 +7,8 @@
     <ProjectGuid>{9FA368C6-5AFD-4707-B6C2-50D1DC9A07AA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Elders.Pandora</RootNamespace>
-    <AssemblyName>Elders.Pandora</AssemblyName>
+    <RootNamespace>Elders.Pandora.Consul</RootNamespace>
+    <AssemblyName>Elders.Pandora.Consul</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
