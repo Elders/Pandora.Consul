@@ -17,6 +17,19 @@ namespace Elders.Pandora
             });
         }
 
+        public bool Exists(string key)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
+
+            string normalizedKey = key.ToLower();
+            using (var client = getClient())
+            {
+                var getAttempt = client.KV.Get(normalizedKey)?.Result;
+                return getAttempt.StatusCode == System.Net.HttpStatusCode.OK;
+
+            }
+        }
+
         public void Delete(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
