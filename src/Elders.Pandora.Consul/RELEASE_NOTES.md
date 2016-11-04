@@ -1,3 +1,6 @@
+#### 0.5.3 - 03.11.2016
+* Remove the check for empty value when inserting a key/value
+
 #### 0.5.2 - 03.11.2016
 * Adds Exists(...) method for PandoraForConsul
 

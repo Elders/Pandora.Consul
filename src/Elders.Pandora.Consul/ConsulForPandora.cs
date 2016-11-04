@@ -66,19 +66,21 @@ namespace Elders.Pandora
         public void Set(string key, string value)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
-            if (string.IsNullOrEmpty(value)) throw new ArgumentException(nameof(value));
 
-            string normalizedKey = key.ToLower();
-            using (var client = getClient())
+            if (string.IsNullOrEmpty(value) == false)
             {
-                var putPair = new KVPair(normalizedKey)
+                string normalizedKey = key.ToLower();
+                using (var client = getClient())
                 {
-                    Value = Encoding.UTF8.GetBytes(value)
-                };
+                    var putPair = new KVPair(normalizedKey)
+                    {
+                        Value = Encoding.UTF8.GetBytes(value)
+                    };
 
-                var putAttempt = client.KV.Put(putPair).Result;
-                if (putAttempt.Response == false || putAttempt.StatusCode != System.Net.HttpStatusCode.OK)
-                    throw new KeyNotFoundException("Unable to store key/value: " + normalizedKey + "  " + value);
+                    var putAttempt = client.KV.Put(putPair).Result;
+                    if (putAttempt.Response == false || putAttempt.StatusCode != System.Net.HttpStatusCode.OK)
+                        throw new KeyNotFoundException("Unable to store key/value: " + normalizedKey + "  " + value);
+                }
             }
         }
     }
