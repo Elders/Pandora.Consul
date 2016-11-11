@@ -1,3 +1,6 @@
+#### 0.6.0-beta0001 - 11.11.2016
+* Updates readme.md
+
 #### 0.5.3 - 03.11.2016
 * Remove the check for empty value when inserting a key/value
 
