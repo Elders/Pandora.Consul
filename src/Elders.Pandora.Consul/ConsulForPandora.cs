@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Consul;
+using System.Text.RegularExpressions;
 
 namespace Elders.Pandora
 {
@@ -60,7 +61,47 @@ namespace Elders.Pandora
 
         public IEnumerable<DeployedSetting> GetAll()
         {
-            throw new NotImplementedException("It is open source. Pull requests are welcome => https://github.com/Elders/Pandora.Consul");
+            var regexMachine = new Regex(@"([^@]+)@@([^\^]+)\^([^~]+)~~(.+)");
+            var regexCluster= new Regex(@"([^@]+)@@([^\^]+)~~(.+)");
+            IList<DeployedSetting> result = new List<DeployedSetting>();
+
+            using (var client = getClient())
+            {
+                var getAttempt = client.KV.List("")?.Result;
+                var response = getAttempt.Response;
+
+                if (!ReferenceEquals(null, response))
+                {
+                    foreach (var setting in getAttempt.Response)
+                    {
+                        var mappedKey = regexMachine.Match(setting.Key.ToString());
+                        if (mappedKey.Success)
+                        {
+                            result.Add(new DeployedSetting(
+                                    raw: mappedKey.Groups[0].Value,
+                                    applicationName: mappedKey.Groups[1].Value,
+                                    cluster: mappedKey.Groups[2].Value,
+                                    machine: mappedKey.Groups[3].Value,
+                                    key: mappedKey.Groups[4].Value,
+                                    value: Encoding.UTF8.GetString(setting.Value)));
+                        }
+                        else
+                        {
+                            mappedKey = regexCluster.Match(setting.Key.ToString());
+
+                            result.Add(new DeployedSetting(
+                                   raw: mappedKey.Groups[0].Value,
+                                   applicationName: mappedKey.Groups[1].Value,
+                                   cluster: mappedKey.Groups[2].Value,
+                                   machine: null,
+                                   key: mappedKey.Groups[3].Value,
+                                   value: Encoding.UTF8.GetString(setting.Value)));
+                        }
+                    }
+                }
+
+                return result;
+            }
         }
 
         public void Set(string key, string value)

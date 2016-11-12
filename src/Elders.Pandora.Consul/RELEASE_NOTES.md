@@ -1,3 +1,6 @@
+#### 0.6.0-beta0002 - 12.11.2016
+* Implemented GetAll method
+
 #### 0.6.0-beta0001 - 11.11.2016
 * Updates readme.md
 
