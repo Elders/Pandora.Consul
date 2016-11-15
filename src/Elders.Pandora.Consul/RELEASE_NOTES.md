@@ -1,3 +1,6 @@
+#### 0.6.0 - 15.11.2016
+* Implemented GetAll method
+
 #### 0.5.3 - 03.11.2016
 * Remove the check for empty value when inserting a key/value
 
