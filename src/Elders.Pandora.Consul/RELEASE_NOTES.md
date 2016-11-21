@@ -1,3 +1,6 @@
+#### 0.6.1 - 22.11.2016
+* New logo
+
 #### 0.6.0 - 15.11.2016
 * Implemented GetAll method
 
