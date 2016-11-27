@@ -1,3 +1,6 @@
+#### 0.6.2 - 27.11.2016
+* Does not return values which are null when GetAll(...) is executed
+
 #### 0.6.1 - 22.11.2016
 * New logo
 

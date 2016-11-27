@@ -62,7 +62,7 @@ namespace Elders.Pandora
         public IEnumerable<DeployedSetting> GetAll()
         {
             var regexMachine = new Regex(@"([^@]+)@@([^\^]+)\^([^~]+)~~(.+)");
-            var regexCluster= new Regex(@"([^@]+)@@([^\^]+)~~(.+)");
+            var regexCluster = new Regex(@"([^@]+)@@([^\^]+)~~(.+)");
             IList<DeployedSetting> result = new List<DeployedSetting>();
 
             using (var client = getClient())
@@ -74,6 +74,9 @@ namespace Elders.Pandora
                 {
                     foreach (var setting in getAttempt.Response)
                     {
+                        if (ReferenceEquals(null, setting) || ReferenceEquals(null, setting.Value))
+                            continue;
+
                         var mappedKey = regexMachine.Match(setting.Key.ToString());
                         if (mappedKey.Success)
                         {
