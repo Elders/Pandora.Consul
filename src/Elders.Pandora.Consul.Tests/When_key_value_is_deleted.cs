@@ -8,7 +8,7 @@ namespace Elders.Pandora.Consul.Tests
     {
         Establish context = () =>
         {
-            consul = new ConsulForPandora();
+            consul = ConsulForPandoraFactory.Create();
             consul.Set("key", "value");
             consul.Get("key");
             consul.Delete("key");
