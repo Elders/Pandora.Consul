@@ -9,12 +9,12 @@ namespace Elders.Pandora.Consul.Tests
         Establish context = () =>
         {
             consul = ConsulForPandoraFactory.Create();
-            consul.Set("key", "value");
-            consul.Get("key");
-            consul.Delete("key");
+            consul.Set("key".CreatePandoraRawKey(), "value");
+            consul.Get("key".CreatePandoraRawKey());
+            consul.Delete("key".CreatePandoraRawKey());
         };
 
-        Because of = () => exception = Catch.Exception(() => consul.Get("key"));
+        Because of = () => exception = Catch.Exception(() => consul.Get("key".CreatePandoraRawKey()));
 
         It should_be_able_to_find_key_value = () => exception.ShouldBeOfExactType<KeyNotFoundException>();
 

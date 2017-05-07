@@ -7,14 +7,14 @@ namespace Elders.Pandora.Consul.Tests
         Establish context = () =>
         {
             consul = ConsulForPandoraFactory.Create();
-            consul.Set("key1", "value1");
-            consul.Set("Key2", "value2");
+            consul.Set("key1".CreatePandoraRawKey(), "value1");
+            consul.Set("Key2".CreatePandoraRawKey(), "value2");
         };
 
         Because of = () =>
         {
-            valueFromConsul1 = consul.Get("Key1");
-            valueFromConsul2 = consul.Get("key2");
+            valueFromConsul1 = consul.Get("Key1".CreatePandoraRawKey());
+            valueFromConsul2 = consul.Get("key2".CreatePandoraRawKey());
         };
 
         It should_get_value1 = () => valueFromConsul1.ShouldEqual("value1");

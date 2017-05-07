@@ -1,3 +1,6 @@
+#### 0.7.0-beta0001 - 07.05.2016
+* Use consul formating for key
+
 #### 0.6.2 - 27.11.2016
 * Does not return values which are null when GetAll(...) is executed
 
