@@ -6,11 +6,11 @@ namespace Elders.Pandora.Consul.Tests
     {
         Establish context = () =>
         {
-            consul = new ConsulForPandora();
-            consul.Set("key", "value");
+            consul = ConsulForPandoraFactory.Create();
+            consul.Set("key".CreatePandoraRawKey(), "value");
         };
 
-        Because of = () => valueFromConsul = consul.Get("key");
+        Because of = () => valueFromConsul = consul.Get("key".CreatePandoraRawKey());
 
         It should_get_value = () => valueFromConsul.ShouldEqual("value");
 
