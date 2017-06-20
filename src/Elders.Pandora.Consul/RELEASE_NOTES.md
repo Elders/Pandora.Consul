@@ -1,3 +1,6 @@
+#### 0.8.0 - 20.06.2016
+* Updates to latest Pandora. Fixed configuration merging
+
 #### 0.7.0 - 01.06.2016
 * Use consul formating for key
 
