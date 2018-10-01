@@ -1,3 +1,7 @@
+#### 0.9.0 - 01.10.2018
+* Updates all packages 
+* Targets .net standard 2.0
+
 #### 0.8.0 - 20.06.2016
 * Updates to latest Pandora. Fixed configuration merging
 
