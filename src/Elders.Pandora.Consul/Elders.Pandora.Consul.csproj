@@ -16,6 +16,7 @@
     <PackageLicenseUrl>https://github.com/Elders/Pandora.Consul/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Elders/Pandora.Consul</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Elders/Pandora.Consul.git</RepositoryUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Elders/logo/master/pandora/white.png</PackageIconUrl>
     <RepositoryType>git</RepositoryType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyName>Elders.Pandora.Consul</AssemblyName>
