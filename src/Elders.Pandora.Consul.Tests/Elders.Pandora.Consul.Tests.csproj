@@ -12,9 +12,6 @@
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.7.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
-    <PackageReference Include="Pandora" Version="1.0.0-beta0006" />
-    <PackageReference Include="Newtonsoft.Json" version="11.0.2" />
-    <PackageReference Include="Consul" version="0.7.2.3" />
     <PackageReference Include="Machine.Specifications" version="0.12.0" />
     <PackageReference Include="Machine.Specifications.Should" version="0.11.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
