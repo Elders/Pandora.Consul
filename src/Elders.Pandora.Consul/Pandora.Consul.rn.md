@@ -1,3 +1,6 @@
+#### 1.0.0-beta0002 - 17.10.2018
+* Updates all packages
+
 #### 1.0.0-beta0001 - 02.10.2018
 * Updates all packages 
 * Targets .netcore 2.1
