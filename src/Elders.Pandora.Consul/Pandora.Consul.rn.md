@@ -1,3 +1,6 @@
+#### 1.0.0-beta0003 - 07.11.2018
+* Updates Pandora package
+
 #### 1.0.0-beta0002 - 17.10.2018
 * Updates all packages
 
