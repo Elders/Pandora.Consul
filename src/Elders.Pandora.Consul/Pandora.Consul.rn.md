@@ -1,3 +1,6 @@
+#### 1.0.0-beta0004 - 13.11.2018
+* Fixes PandoraConsulConfigurationSource
+
 #### 1.0.0-beta0003 - 07.11.2018
 * Updates Pandora package
 
