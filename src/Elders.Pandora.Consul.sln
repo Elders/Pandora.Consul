@@ -1,12 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{9B98927F-2F3A-4F37-B97C-FE67EA98473D}"
 	ProjectSection(SolutionItems) = preProject
 		..\build.cmd = ..\build.cmd
-		Elders.Pandora.Consul\RELEASE_NOTES.md = Elders.Pandora.Consul\RELEASE_NOTES.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Pandora.Consul", "Elders.Pandora.Consul\Elders.Pandora.Consul.csproj", "{9FA368C6-5AFD-4707-B6C2-50D1DC9A07AA}"
@@ -30,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0505E01F-5AD6-46DD-B679-19C14ECD6C78}
 	EndGlobalSection
 EndGlobal

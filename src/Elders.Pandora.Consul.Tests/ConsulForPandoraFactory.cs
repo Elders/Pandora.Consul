@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Configuration;
 using Elders.Pandora.Box;
+using Microsoft.Extensions.Configuration;
 
 namespace Elders.Pandora.Consul.Tests
 {
@@ -8,7 +8,13 @@ namespace Elders.Pandora.Consul.Tests
     {
         public static ConsulForPandora Create()
         {
-            return new ConsulForPandora(new Uri(ConfigurationManager.AppSettings.Get("consul-host")));
+            IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .Build();
+
+            string consulUrl = config["consulHost"];
+
+            return new ConsulForPandora(new Uri(consulUrl));
         }
     }
 

@@ -1,78 +1,70 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9FA368C6-5AFD-4707-B6C2-50D1DC9A07AA}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Elders.Pandora.Consul</RootNamespace>
+    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+  </PropertyGroup>
+
+  <!--Nuget-->
+  <PropertyGroup>
+    <PackageId>Pandora.Consul</PackageId>
+    <Product>Pandora.Consul</Product>
+    <Title>Pandora</Title>
+    <Authors>Elders OSS</Authors>
+    <Copyright>Copyright © Elders OSS 2013</Copyright>
+    <Description>Integration which utilizes Consul and pandora to setup configurations</Description>
+    <PackageTags>Configuration Json Environment Environments Staging Production Dev Local</PackageTags>
+    <PackageLicenseUrl>https://github.com/Elders/Pandora.Consul/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Elders/Pandora.Consul</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Elders/Pandora.Consul.git</RepositoryUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Elders/logo/master/pandora/white.png</PackageIconUrl>
+    <RepositoryType>git</RepositoryType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyName>Elders.Pandora.Consul</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+
+  <!--Global Dependencies-->
+  <ItemGroup>
+    <PackageReference Include="LibLog" Version="5.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
+  </ItemGroup>
+
+  <!--Nuget Dependencies-->
+  <ItemGroup>
+    <PackageReference Include="Pandora" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" version="11.0.2" />
+    <PackageReference Include="Consul" version="0.7.2.6" />
+  </ItemGroup>
+
+  <!--netstandard2.0-->
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+
+  <!--NETFULL-->
+  <PropertyGroup Condition="'$(TargetFramework)'!='netstandard2.0'">
+    <DefineConstants>TRACE;DEBUG;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <!--Debug Symbols-->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <EmbedSources>true</EmbedSources>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <EmbedSources>true</EmbedSources>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Consul, Version=0.7.2.3, Culture=neutral, PublicKeyToken=20a6ad9a81df1d95, processorArchitecture=MSIL">
-      <HintPath>..\packages\Consul.0.7.2.3\lib\net45\Consul.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Elders.Pandora, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.0.8.2\lib\net45-full\Elders.Pandora.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Elders.Pandora.Box, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.0.8.2\lib\net45-full\Elders.Pandora.Box.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ConsulForPandora.cs" />
-    <Compile Include="PandoraKeyExtentions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="RELEASE_NOTES.md" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

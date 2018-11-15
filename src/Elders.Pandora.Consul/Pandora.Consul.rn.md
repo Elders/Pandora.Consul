@@ -1,3 +1,7 @@
+#### 1.0.0 - 15.11.2018
+* Targets .netcore 2.1
+* Adds PandoraConsulConfigurationSource
+
 #### 0.8.0 - 20.06.2016
 * Updates to latest Pandora. Fixed configuration merging
 
