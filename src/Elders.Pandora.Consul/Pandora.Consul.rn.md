@@ -1,14 +1,4 @@
-#### 1.0.0-beta0004 - 13.11.2018
-* Fixes PandoraConsulConfigurationSource
-
-#### 1.0.0-beta0003 - 07.11.2018
-* Updates Pandora package
-
-#### 1.0.0-beta0002 - 17.10.2018
-* Updates all packages
-
-#### 1.0.0-beta0001 - 02.10.2018
-* Updates all packages 
+#### 1.0.0 - 15.11.2018
 * Targets .netcore 2.1
 * Adds PandoraConsulConfigurationSource
 
