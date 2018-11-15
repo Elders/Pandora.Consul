@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Consul;
+using Elders.Pandora.Consul.Logging;
 
 namespace Elders.Pandora
 {
     public class ConsulForPandora : IConfigurationRepository
     {
+        private static readonly ILog log = LogProvider.GetLogger(typeof(ConsulForPandora));
+
         readonly Func<IConsulClient> getClient;
 
         public ConsulForPandora(Uri address = null)
@@ -26,7 +30,6 @@ namespace Elders.Pandora
             {
                 var getAttempt = client.KV.Get(normalizedKey)?.Result;
                 return getAttempt.StatusCode == System.Net.HttpStatusCode.OK;
-
             }
         }
 
@@ -58,17 +61,25 @@ namespace Elders.Pandora
             }
         }
 
+        ulong waitIndexGetAll = 0;
+
         public IEnumerable<DeployedSetting> GetAll()
         {
+            Console.WriteLine($"Refreshing configuration from Consul - {Thread.CurrentThread.ManagedThreadId}");
+
+            var queryOptions = new QueryOptions() { WaitIndex = waitIndexGetAll, WaitTime = TimeSpan.FromMinutes(5) };
+
             IList<DeployedSetting> result = new List<DeployedSetting>();
 
             using (var client = getClient())
             {
-                var getAttempt = client.KV.List("")?.Result;
+                var getAttempt = client.KV.List("", queryOptions)?.Result;
                 var response = getAttempt.Response;
 
                 if (!ReferenceEquals(null, response))
                 {
+                    waitIndexGetAll = getAttempt.LastIndex;
+
                     foreach (var setting in getAttempt.Response)
                     {
                         if (ReferenceEquals(null, setting) ||
@@ -81,6 +92,7 @@ namespace Elders.Pandora
                     }
                 }
 
+                Console.WriteLine($"Refreshing configuration from Consul completed - {Thread.CurrentThread.ManagedThreadId}");
                 return result;
             }
         }
@@ -105,5 +117,39 @@ namespace Elders.Pandora
                 }
             }
         }
+
+        //public async Task<IEnumerable<DeployedSetting>> GetAllAsync()
+        //{
+        //    Console.WriteLine("Refreshing configuration from Consul");
+
+        //    var queryOptions = new QueryOptions() { WaitIndex = waitIndexGetAll, WaitTime = TimeSpan.FromMinutes(5) };
+
+        //    IList<DeployedSetting> result = new List<DeployedSetting>();
+
+        //    using (var client = getClient())
+        //    {
+        //        var getAttempt = await client.KV.List("", queryOptions);
+        //        var response = getAttempt.Response;
+
+        //        if (!ReferenceEquals(null, response))
+        //        {
+        //            waitIndexGetAll = getAttempt.LastIndex;
+
+        //            foreach (var setting in getAttempt.Response)
+        //            {
+        //                if (ReferenceEquals(null, setting) ||
+        //                    ReferenceEquals(null, setting.Value) ||
+        //                    setting.Key.StartsWith("pandora", StringComparison.OrdinalIgnoreCase) == false)
+        //                    continue;
+
+        //                Key key = setting.Key.FromConsulKey();
+        //                result.Add(new DeployedSetting(key, Encoding.UTF8.GetString(setting.Value)));
+        //            }
+        //        }
+
+        //        Console.WriteLine("Refreshing configuration from Consul completed.");
+        //        return result;
+        //    }
+        //}
     }
 }
