@@ -1,3 +1,6 @@
+#### 1.0.1 - 15.11.2018
+* Skips non pandora keys registered in consul
+
 #### 1.0.0 - 15.11.2018
 * Targets .netcore 2.1
 * Adds PandoraConsulConfigurationSource
