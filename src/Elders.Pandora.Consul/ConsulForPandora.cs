@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Consul;
-using Elders.Pandora.Consul.Logging;
 
 namespace Elders.Pandora
 {
     public class ConsulForPandora : IConfigurationRepository
     {
-        private static readonly ILog log = LogProvider.GetLogger(typeof(ConsulForPandora));
-
         readonly Func<IConsulClient> getClient;
 
         public ConsulForPandora(Uri address = null)
@@ -88,6 +85,7 @@ namespace Elders.Pandora
                             continue;
 
                         Key key = setting.Key.FromConsulKey();
+                        if (key is null) continue;
                         result.Add(new DeployedSetting(key, Encoding.UTF8.GetString(setting.Value)));
                     }
                 }
