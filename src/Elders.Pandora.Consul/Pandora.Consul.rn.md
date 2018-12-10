@@ -1,3 +1,6 @@
+#### 1.1.0 - 10.12.2018
+* Updates to DNC 2.2
+
 #### 1.0.1 - 15.11.2018
 * Skips non pandora keys registered in consul
 
