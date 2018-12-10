@@ -29,12 +29,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
   </ItemGroup>
 
   <!--Nuget Dependencies-->
   <ItemGroup>
-    <PackageReference Include="Pandora" Version="1.0.1" />
+    <PackageReference Include="Pandora" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" version="11.0.2" />
     <PackageReference Include="Consul" version="0.7.2.6" />
   </ItemGroup>
