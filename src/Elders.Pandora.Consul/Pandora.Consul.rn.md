@@ -1,3 +1,7 @@
+#### 2.0.0-beta0001 - 07.10.2019
+* Upgrades to netcore3.0
+* Getting configurations is not bounded to the PandoraContext
+
 #### 1.0.1 - 15.11.2018
 * Skips non pandora keys registered in consul
 
