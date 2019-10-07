@@ -7,7 +7,12 @@ namespace Elders.Pandora
         public static string ToConsulKey(this string rawKey)
         {
             var key = Key.Parse(rawKey);
-            return $"pandora/{key.ApplicationName}/{key.Cluster}/{key.Machine}/{key.SettingKey}";
+            return $"{ConsulForPandora.RootFolder}/{key.ApplicationName}/{key.Cluster}/{key.Machine}/{key.SettingKey}";
+        }
+
+        public static string ToApplicationKeyPrefix(this IPandoraContext context)
+        {
+            return $"{ConsulForPandora.RootFolder}/{context.ApplicationName}";
         }
 
         public static Key FromConsulKey(this string consulKey)
