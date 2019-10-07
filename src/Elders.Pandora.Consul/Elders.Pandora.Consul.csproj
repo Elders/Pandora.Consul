@@ -13,10 +13,10 @@
     <Copyright>Copyright © Elders OSS 2013-2019</Copyright>
     <Description>Integration which utilizes Consul and pandora to setup configurations</Description>
     <PackageTags>Configuration Json Environment Environments Staging Production Dev Local</PackageTags>
-    <PackageLicense>https://github.com/Elders/Pandora.Consul/blob/master/LICENSE</PackageLicense>
+    <PackageLicenseUrl>https://github.com/Elders/Pandora.Consul/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Elders/Pandora.Consul</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Elders/Pandora.Consul.git</RepositoryUrl>
-    <PackageIcon>https://raw.githubusercontent.com/Elders/logo/master/pandora/white.png</PackageIcon>
+    <PackageIconUrl>https://raw.githubusercontent.com/Elders/logo/master/pandora/white.png</PackageIconUrl>
     <RepositoryType>git</RepositoryType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AssemblyName>Elders.Pandora.Consul</AssemblyName>
