@@ -12,7 +12,7 @@ namespace Elders.Pandora
 
         public static string ToApplicationKeyPrefix(this IPandoraContext context)
         {
-            return $"{ConsulForPandora.RootFolder}/{context.ApplicationName}";
+            return $"{ConsulForPandora.RootFolder}/{context.ApplicationName}".ToLower();
         }
 
         public static Key FromConsulKey(this string consulKey)
