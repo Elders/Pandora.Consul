@@ -1,3 +1,8 @@
+#### 2.0.0 - 26.03.2020
+* Consul keys are case sensitive so we make everything lower
+* Upgrades to netcore3.1
+* Getting configurations is not bounded to the PandoraContext
+
 #### 1.1.0 - 10.12.2018
 * Updates to DNC 2.2
 
