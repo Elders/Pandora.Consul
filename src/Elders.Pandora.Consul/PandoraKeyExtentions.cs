@@ -1,6 +1,4 @@
-﻿using Elders.Pandora.Consul.Logging;
-
-namespace Elders.Pandora
+﻿namespace Elders.Pandora
 {
     public static class PandoraKeyExtentions
     {
@@ -20,7 +18,6 @@ namespace Elders.Pandora
             string[] parts = consulKey.Split('/');
             if (parts.Length != 5)
             {
-                LogProvider.GetLogger(typeof(ConsulForPandora)).Warn($"Invalid Pandora consul key {consulKey}. Skipped!");
                 return null;
             }
             return new Key(parts[1], parts[2], parts[3], parts[4]);
