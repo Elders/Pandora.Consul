@@ -1,8 +1,6 @@
-#### 2.0.0-beta0002 - 08.11.2019
+#### 2.0.0 - 26.03.2020
 * Consul keys are case sensitive so we make everything lower
-
-#### 2.0.0-beta0001 - 07.10.2019
-* Upgrades to netcore3.0
+* Upgrades to netcore3.1
 * Getting configurations is not bounded to the PandoraContext
 
 #### 1.1.0 - 10.12.2018
