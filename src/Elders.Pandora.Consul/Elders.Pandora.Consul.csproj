@@ -9,11 +9,11 @@
     <PackageId>Pandora.Consul</PackageId>
     <Product>Pandora.Consul</Product>
     <Title>Pandora</Title>
-    <Authors>Elders OSS</Authors>
-    <Copyright>Copyright © Elders OSS 2013-2020</Copyright>
+    <Copyright>Copyright © Elders OSS 2013-2022</Copyright>
     <Description>Integration which utilizes Consul and pandora to setup configurations</Description>
     <PackageTags>Configuration Json Environment Environments Staging Production Dev Local</PackageTags>
-    <PackageLicenseUrl>https://github.com/Elders/Pandora.Consul/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/Elders/Pandora.Consul</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Elders/Pandora.Consul.git</RepositoryUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/Elders/logo/master/pandora/white.png</PackageIconUrl>
@@ -21,7 +21,7 @@
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AssemblyName>Elders.Pandora.Consul</AssemblyName>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,9 +39,5 @@
     <DebugSymbols>true</DebugSymbols>
     <EmbedSources>true</EmbedSources>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
-  </ItemGroup>
 
 </Project>
