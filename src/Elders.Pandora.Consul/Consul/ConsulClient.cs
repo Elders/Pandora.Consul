@@ -31,11 +31,13 @@ namespace Elders.Pandora.Consul.Consul
             var content = new StringContent(value);
             var path = $"/v1/kv/{key}";
 
-            var response = await _httpClient.PutAsync(path, content).ConfigureAwait(false);
-            if (response.IsSuccessStatusCode)
+            using (HttpResponseMessage response = await _httpClient.PutAsync(path, content).ConfigureAwait(false))
             {
-                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                return bool.Parse(responseString);
+                if (response.IsSuccessStatusCode)
+                {
+                    using var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return JsonSerializer.Deserialize<bool>(contentStream, serializerOptions);
+                }
             }
 
             return false;
@@ -45,11 +47,13 @@ namespace Elders.Pandora.Consul.Consul
         {
             var path = $"/v1/kv/{key}";
 
-            var response = await _httpClient.DeleteAsync(path).ConfigureAwait(false);
-            if (response.IsSuccessStatusCode)
+            using (HttpResponseMessage response = await _httpClient.DeleteAsync(path).ConfigureAwait(false))
             {
-                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                return bool.Parse(responseString);
+                if (response.IsSuccessStatusCode)
+                {
+                    using var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return JsonSerializer.Deserialize<bool>(contentStream, serializerOptions);
+                }
             }
 
             return false;
@@ -59,14 +63,18 @@ namespace Elders.Pandora.Consul.Consul
         {
             var path = $"/v1/kv/{key}";
 
-            var response = await _httpClient.GetAsync(path).ConfigureAwait(false);
-            if (response.IsSuccessStatusCode)
+            using (HttpResponseMessage response = await _httpClient.GetAsync(path).ConfigureAwait(false))
             {
-                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(responseString, serializerOptions);
+                if (response.IsSuccessStatusCode)
+                {
+                    using (var contentStrem = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    {
+                        List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(contentStrem, serializerOptions);
 
-                if (result?.Any() == true)
-                    return result.Single();
+                        if (result?.Any() == true)
+                            return result.Single();
+                    }
+                }
             }
 
             return default;
@@ -76,12 +84,18 @@ namespace Elders.Pandora.Consul.Consul
         {
             string path = $"/v1/kv/{key}?recurse=true&wait={wait.TotalMinutes}m";
 
-            var response = await _httpClient.GetAsync(path).ConfigureAwait(false);
-            if (response.IsSuccessStatusCode)
+            using (HttpResponseMessage response = await _httpClient.GetAsync(path).ConfigureAwait(false))
             {
-                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(responseString, serializerOptions);
-                return result;
+                if (response.IsSuccessStatusCode)
+                {
+                    using (var contentStrem = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    {
+                        List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(contentStrem, serializerOptions);
+
+                        if (result?.Any() == true)
+                            return result;
+                    }
+                }
             }
 
             return Enumerable.Empty<ReadKeyValueResponse>();
@@ -91,10 +105,12 @@ namespace Elders.Pandora.Consul.Consul
         {
             var path = $"/v1/kv/{key}";
 
-            var response = await _httpClient.GetAsync(path).ConfigureAwait(false);
-            if (response.IsSuccessStatusCode)
+            using (var response = await _httpClient.GetAsync(path).ConfigureAwait(false))
             {
-                return true;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
             }
 
             return false;
