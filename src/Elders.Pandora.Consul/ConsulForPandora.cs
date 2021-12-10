@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Elders.Pandora.Consul.Consul;
+using Elders.Pandora.Consul.Consul.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
-using Consul;
 
 namespace Elders.Pandora
 {
@@ -10,14 +12,13 @@ namespace Elders.Pandora
     {
         public const string RootFolder = "pandora";
 
-        private readonly Func<IConsulClient> getClient;
+        private readonly ConsulClient _client;
+
 
         public ConsulForPandora(Uri address = null)
         {
-            getClient = () => new ConsulClient(cfg =>
-            {
-                cfg.Address = address ?? cfg.Address;
-            });
+            _client = new ConsulClient(address);
+
         }
 
         public bool Exists(string key)
@@ -25,11 +26,8 @@ namespace Elders.Pandora
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
 
             string normalizedKey = key.ToLower().ToConsulKey();
-            using (var client = getClient())
-            {
-                var getAttempt = client.KV.Get(normalizedKey)?.GetAwaiter().GetResult();
-                return getAttempt.StatusCode == System.Net.HttpStatusCode.OK;
-            }
+
+            return _client.ExistKeyValueAsync(normalizedKey).GetAwaiter().GetResult();
         }
 
         public void Delete(string key)
@@ -37,65 +35,45 @@ namespace Elders.Pandora
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
 
             string normalizedKey = key.ToLower().ToConsulKey();
-            using (var client = getClient())
-            {
-                var getAttempt = client.KV.Delete(normalizedKey)?.GetAwaiter().GetResult();
-                if (getAttempt.StatusCode != System.Net.HttpStatusCode.OK)
-                    throw new KeyNotFoundException("Unable to delete key/value with key: " + normalizedKey);
-            }
+
+            bool result = _client.DeleteKeyValueAsync(normalizedKey).GetAwaiter().GetResult();
+
+            if (result == false)
+                throw new KeyNotFoundException("Unable to delete key/value with key: " + normalizedKey);
         }
 
         public string Get(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
             string normalizedKey = key.ToLower().ToConsulKey();
-            using (var client = getClient())
-            {
-                var getAttempt = client.KV.Get(normalizedKey)?.GetAwaiter().GetResult();
-                if (getAttempt.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    throw new KeyNotFoundException("Unable to find value for key: " + normalizedKey);
 
-                byte[] valBytes = getAttempt.Response.Value;
-                return Encoding.UTF8.GetString(valBytes);
-            }
+            var result = _client.ReadKeyValueAsync(normalizedKey).GetAwaiter().GetResult();
+
+            if (result is null)
+                throw new KeyNotFoundException("Unable to find value for key: " + normalizedKey);
+
+            byte[] data = Convert.FromBase64String(result.Value);
+
+            var value = Encoding.UTF8.GetString(data);
+
+            return value;
         }
 
-        ulong waitIndexGetAll = 0;
+        static readonly TimeSpan WaitTime = TimeSpan.FromMinutes(5);
 
         public IEnumerable<DeployedSetting> GetAll(IPandoraContext context)
         {
             string pandoraApplication = context.ToApplicationKeyPrefix();
+            // logger
             Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul - {Thread.CurrentThread.ManagedThreadId}");
 
-            var queryOptions = new QueryOptions() { WaitIndex = waitIndexGetAll, WaitTime = TimeSpan.FromMinutes(5) };
+            List<ReadKeyValueResponse> response = _client.ReadAllKeyValueAsync(pandoraApplication, WaitTime).GetAwaiter().GetResult().ToList();
 
-            IList<DeployedSetting> result = new List<DeployedSetting>();
+            IEnumerable<DeployedSetting> deployedSettings = response.Select(x => new DeployedSetting(x.Key.FromConsulKey(), Encoding.UTF8.GetString(Convert.FromBase64String(x.Value))));
 
-            using (var client = getClient())
-            {
-                var getAttempt = client.KV.List(pandoraApplication, queryOptions)?.GetAwaiter().GetResult();
-                var response = getAttempt.Response;
+            Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul completed - {Thread.CurrentThread.ManagedThreadId}");
+            return deployedSettings;
 
-                if (!ReferenceEquals(null, response))
-                {
-                    waitIndexGetAll = getAttempt.LastIndex;
-
-                    foreach (var setting in getAttempt.Response)
-                    {
-                        if (ReferenceEquals(null, setting) ||
-                            ReferenceEquals(null, setting.Value) ||
-                            setting.Key.StartsWith(pandoraApplication, StringComparison.OrdinalIgnoreCase) == false)
-                            continue;
-
-                        Key key = setting.Key.FromConsulKey();
-                        if (key is null) continue;
-                        result.Add(new DeployedSetting(key, Encoding.UTF8.GetString(setting.Value)));
-                    }
-                }
-
-                Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul completed - {Thread.CurrentThread.ManagedThreadId}");
-                return result;
-            }
         }
 
         public void Set(string key, string value)
@@ -105,17 +83,11 @@ namespace Elders.Pandora
             if (string.IsNullOrEmpty(value) == false)
             {
                 string normalizedKey = key.ToLower().ToConsulKey();
-                using (var client = getClient())
-                {
-                    var putPair = new KVPair(normalizedKey)
-                    {
-                        Value = Encoding.UTF8.GetBytes(value)
-                    };
 
-                    var putAttempt = client.KV.Put(putPair).Result;
-                    if (putAttempt.Response == false || putAttempt.StatusCode != System.Net.HttpStatusCode.OK)
-                        throw new KeyNotFoundException("Unable to store key/value: " + normalizedKey + "  " + value);
-                }
+                var result = _client.CreateKeyValueAsync(normalizedKey, value).GetAwaiter().GetResult();
+
+                if (result == false)
+                    throw new KeyNotFoundException("Unable to store key/value: " + normalizedKey + "  " + value);
             }
         }
     }
