@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace Elders.Pandora.Consul.Consul
 {
-    public class ConsulClient
+    internal class ConsulClient
     {
         private readonly HttpClient _httpClient;
         private static readonly JsonSerializerOptions serializerOptions = new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            WriteIndented = false
         };
 
         public ConsulClient(Uri address)
         {
             _httpClient = new HttpClient
             {
-                BaseAddress = address,
-                Timeout = TimeSpan.FromSeconds(45)
+                BaseAddress = address
             };
         }
 
@@ -55,31 +55,26 @@ namespace Elders.Pandora.Consul.Consul
             return false;
         }
 
-        public async Task<ReadKeyValueResponse> ReadKeyValueAsync(string key, bool recurce = false)
+        public async Task<ReadKeyValueResponse> ReadKeyValueAsync(string key)
         {
-            var path = $"/v1/kv/{key}?recurce={recurce}";
+            var path = $"/v1/kv/{key}";
 
             var response = await _httpClient.GetAsync(path).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(responseString, serializerOptions);
-                if (result.Any() == false)
-                    return null;
 
-                return result.FirstOrDefault();
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                return null;
+                if (result?.Any() == true)
+                    return result.Single();
             }
 
-            return null;
+            return default;
         }
 
-        public async Task<IEnumerable<ReadKeyValueResponse>> ReadAllKeyValueAsync(string key, bool recurce = false)
+        public async Task<IEnumerable<ReadKeyValueResponse>> ReadAllKeyValueAsync(string key, TimeSpan wait)
         {
-            var path = $"/v1/kv/{key}?recurce={recurce}&consistent";
+            string path = $"/v1/kv/{key}?recurse=true&wait={wait.TotalMinutes}m";
 
             var response = await _httpClient.GetAsync(path).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)

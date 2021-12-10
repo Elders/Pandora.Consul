@@ -59,14 +59,17 @@ namespace Elders.Pandora
             return value;
         }
 
+        static readonly TimeSpan WaitTime = TimeSpan.FromMinutes(5);
+
         public IEnumerable<DeployedSetting> GetAll(IPandoraContext context)
         {
             string pandoraApplication = context.ToApplicationKeyPrefix();
+            // logger
             Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul - {Thread.CurrentThread.ManagedThreadId}");
 
-            List<ReadKeyValueResponse> response = _client.ReadAllKeyValueAsync(pandoraApplication).GetAwaiter().GetResult().ToList();
+            List<ReadKeyValueResponse> response = _client.ReadAllKeyValueAsync(pandoraApplication, WaitTime).GetAwaiter().GetResult().ToList();
 
-            IEnumerable<DeployedSetting> deployedSettings = response.Select(x => new DeployedSetting(x.Key.FromConsulKey(), x.Value));
+            IEnumerable<DeployedSetting> deployedSettings = response.Select(x => new DeployedSetting(x.Key.FromConsulKey(), Encoding.UTF8.GetString(Convert.FromBase64String(x.Value))));
 
             Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul completed - {Thread.CurrentThread.ManagedThreadId}");
             return deployedSettings;
