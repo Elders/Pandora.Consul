@@ -94,8 +94,7 @@ namespace Elders.Pandora.Consul.Consul
             var response = await _httpClient.GetAsync(path).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
-                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                return bool.Parse(responseString);
+                return true;
             }
 
             return false;

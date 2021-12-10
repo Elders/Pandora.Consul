@@ -25,27 +25,4 @@ namespace Elders.Pandora.Consul.Tests
         static string valueFromConsul2;
         static ConsulForPandora consul;
     }
-
-    public class When_key_value_exist
-    {
-        Establish context = () =>
-        {
-            consul = ConsulForPandoraFactory.Create();
-            consul.Set("key1".CreatePandoraRawKey(), "value1");
-        };
-
-        Because of = () =>
-        {
-            key1Exist = consul.Exists("key1".CreatePandoraRawKey());
-            key2Exist = consul.Exists("key2".CreatePandoraRawKey());
-        };
-
-        It should_be_true = () => key1Exist.ShouldBeTrue();
-
-        It should_be_false = () => key2Exist.ShouldBeFalse();
-
-        static bool key1Exist;
-        static bool key2Exist;
-        static ConsulForPandora consul;
-    }
 }
