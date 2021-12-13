@@ -22,7 +22,8 @@ namespace Elders.Pandora.Consul.Consul
         {
             _httpClient = new HttpClient
             {
-                BaseAddress = address
+                BaseAddress = address,
+                Timeout = TimeSpan.FromMinutes(15)
             };
         }
 
@@ -80,25 +81,38 @@ namespace Elders.Pandora.Consul.Consul
             return default;
         }
 
-        public async Task<IEnumerable<ReadKeyValueResponse>> ReadAllKeyValueAsync(string key, TimeSpan wait)
+        public async Task<(IEnumerable<ReadKeyValueResponse> KV, ulong lastIndex)> ReadAllKeyValueAsync(string key, TimeSpan wait, ulong lastIndex)
         {
-            string path = $"/v1/kv/{key}?recurse=true&wait={wait.TotalMinutes}m";
+            string path = $"/v1/kv/{key}?index={lastIndex}&recurse=true&wait={wait.TotalMinutes}m";
 
             using (HttpResponseMessage response = await _httpClient.GetAsync(path).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
+                    if (response.Headers.Contains("X-Consul-Index"))
+                    {
+                        try
+                        {
+                            lastIndex = ulong.Parse(response.Headers.GetValues("X-Consul-Index").First());
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new FormatException($"Failed to parse X-Consul-Index. StatusCode: {response.StatusCode}", ex);
+                        }
+                    }
+
                     using (var contentStrem = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     {
+
                         List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(contentStrem, serializerOptions);
 
                         if (result?.Any() == true)
-                            return result;
+                            return (result, lastIndex);
                     }
                 }
             }
 
-            return Enumerable.Empty<ReadKeyValueResponse>();
+            return (Enumerable.Empty<ReadKeyValueResponse>(), 0);
         }
 
         public async Task<bool> ExistKeyValueAsync(string key)

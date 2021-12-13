@@ -14,11 +14,9 @@ namespace Elders.Pandora
 
         private readonly ConsulClient _client;
 
-
         public ConsulForPandora(Uri address = null)
         {
             _client = new ConsulClient(address);
-
         }
 
         public bool Exists(string key)
@@ -60,20 +58,20 @@ namespace Elders.Pandora
         }
 
         static readonly TimeSpan WaitTime = TimeSpan.FromMinutes(5);
+        ulong waitIndexGetAll = 0;
 
         public IEnumerable<DeployedSetting> GetAll(IPandoraContext context)
         {
             string pandoraApplication = context.ToApplicationKeyPrefix();
-            // logger
             Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul - {Thread.CurrentThread.ManagedThreadId}");
 
-            List<ReadKeyValueResponse> response = _client.ReadAllKeyValueAsync(pandoraApplication, WaitTime).GetAwaiter().GetResult().ToList();
-
-            IEnumerable<DeployedSetting> deployedSettings = response.Select(x => new DeployedSetting(x.Key.FromConsulKey(), Encoding.UTF8.GetString(Convert.FromBase64String(x.Value))));
+            (IEnumerable<ReadKeyValueResponse> KV, ulong lastIndex) response = _client.ReadAllKeyValueAsync(pandoraApplication, WaitTime, waitIndexGetAll).GetAwaiter().GetResult();
+            waitIndexGetAll = response.lastIndex;
+            List<DeployedSetting> kv = response.KV.Select(x => new DeployedSetting(x.Key.FromConsulKey(), Encoding.UTF8.GetString(Convert.FromBase64String(x.Value)))).ToList();
 
             Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul completed - {Thread.CurrentThread.ManagedThreadId}");
-            return deployedSettings;
 
+            return kv;
         }
 
         public void Set(string key, string value)
