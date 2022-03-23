@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/Elders/Pandora.Consul/compare/v3.0.1...v3.1.0) (2022-03-23)
+
+
+### Features
+
+* Properly implements the consul reload functionality ([10fc295](https://github.com/Elders/Pandora.Consul/commit/10fc295a91986fe977ae29ba14f98f52b957fd0e))
+
 ## [3.0.1](https://github.com/Elders/Pandora.Consul/compare/v3.0.0...v3.0.1) (2021-12-13)
 
 
