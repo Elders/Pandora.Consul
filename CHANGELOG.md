@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/Elders/Pandora.Consul/compare/v3.1.0...v3.1.1) (2022-04-23)
+
+
+### Bug Fixes
+
+* Fixes reload bug with OptionsMonitor ([361315d](https://github.com/Elders/Pandora.Consul/commit/361315dd079ae1342b4eee0a83457694282cfb52))
+
 # [3.1.0](https://github.com/Elders/Pandora.Consul/compare/v3.0.1...v3.1.0) (2022-03-23)
 
 
