@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/Elders/Pandora.Consul/compare/v3.1.1...v3.2.0) (2022-07-06)
+
+
+### Features
+
+* Updates packages ([1c937fc](https://github.com/Elders/Pandora.Consul/commit/1c937fc12713f8d16128f2c231748e9bee55daf9))
+
 ## [3.1.1](https://github.com/Elders/Pandora.Consul/compare/v3.1.0...v3.1.1) (2022-04-23)
 
 
