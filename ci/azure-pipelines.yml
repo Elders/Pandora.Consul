@@ -21,6 +21,7 @@ jobs:
 
   - task: DotNetCoreCLI@2
     name: test
+    enabled: false
     inputs:
       command: test
       projects: '**/*Tests.csproj'
