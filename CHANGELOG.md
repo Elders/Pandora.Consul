@@ -1,3 +1,10 @@
+## [3.2.1](https://github.com/Elders/Pandora.Consul/compare/v3.2.0...v3.2.1) (2022-08-16)
+
+
+### Bug Fixes
+
+* pipeline update ([7908ef5](https://github.com/Elders/Pandora.Consul/commit/7908ef5ec5d96bb4a65e4b64e4f2c6cfce33f065))
+
 # [3.2.0](https://github.com/Elders/Pandora.Consul/compare/v3.1.1...v3.2.0) (2022-07-06)
 
 
