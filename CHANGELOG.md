@@ -1,3 +1,10 @@
+## [3.2.2-preview.1](https://github.com/Elders/Pandora.Consul/compare/v3.2.1...v3.2.2-preview.1) (2022-12-16)
+
+
+### Bug Fixes
+
+* Updates dependencies packages ([b5eab35](https://github.com/Elders/Pandora.Consul/commit/b5eab354c5fe4c4f580c1db0fde4877bedc187fc))
+
 ## [3.2.1](https://github.com/Elders/Pandora.Consul/compare/v3.2.0...v3.2.1) (2022-08-16)
 
 
