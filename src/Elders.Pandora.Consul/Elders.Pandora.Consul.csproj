@@ -30,7 +30,7 @@
 
   <!--Nuget Dependencies-->
   <ItemGroup>
-    <PackageReference Include="Pandora" Version="3.3.0-preview.1" />
+    <PackageReference Include="Pandora" Version="3.3.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
