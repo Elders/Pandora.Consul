@@ -8,7 +8,7 @@
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-    <PackageReference Include="Machine.Specifications" version="1.0.0" />
+    <PackageReference Include="Machine.Specifications" version="1.1.0" />
     <PackageReference Include="Machine.Specifications.Should" version="1.0.0" />
   </ItemGroup>
 
