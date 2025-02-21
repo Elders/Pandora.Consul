@@ -64,9 +64,10 @@ namespace Elders.Pandora
 
             IEnumerable<ReadKeyValueResponse> response = _client.ReadAllKeyValuesAsync(pandoraApplication).GetAwaiter().GetResult();
 
-            List<DeployedSetting> newSettings = response
-                                                    .Select(x => new DeployedSetting(x.Key.FromConsulKey(), Encoding.UTF8.GetString(Convert.FromBase64String(x.Value))))
-                                                    .ToList();
+            // Filters out empty values, if we don't do this we will get an exception when we try to create DeployedSetting with an empty value.
+            // And we lose all settings instead of skipping only the broken ones.
+            IEnumerable<ReadKeyValueResponse> nonEmptyResponses = response.Where(x => string.IsNullOrEmpty(x.Value) == false);
+            List<DeployedSetting> newSettings = nonEmptyResponses.Select(x => new DeployedSetting(x.Key.FromConsulKey(), Encoding.UTF8.GetString(Convert.FromBase64String(x.Value)))).ToList();
 
             Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul completed - {Thread.CurrentThread.ManagedThreadId}");
 
