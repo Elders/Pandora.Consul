@@ -1,3 +1,10 @@
+## [3.3.1](https://github.com/Elders/Pandora.Consul/compare/v3.3.0...v3.3.1) (2025-02-21)
+
+
+### Bug Fixes
+
+* Skips all broken values when settings are loaded instead of throwing an exception and losing all settings ([14c873c](https://github.com/Elders/Pandora.Consul/commit/14c873c3c8a2b7a6d65f0b35b14c1407504b723b))
+
 # [3.3.0](https://github.com/Elders/Pandora.Consul/compare/v3.2.1...v3.3.0) (2022-12-16)
 
 
