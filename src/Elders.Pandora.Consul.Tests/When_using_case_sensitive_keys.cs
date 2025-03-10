@@ -4,17 +4,17 @@ namespace Elders.Pandora.Consul.Tests
 {
     public class When_using_case_sensitive_keys
     {
-        Establish context = () =>
+        Establish context = async () =>
         {
             consul = ConsulForPandoraFactory.Create();
-            consul.Set("key1".CreatePandoraRawKey(), "value1");
-            consul.Set("Key2".CreatePandoraRawKey(), "value2");
+            await consul.SetAsync("key1".CreatePandoraRawKey(), "value1").ConfigureAwait(false);
+            await consul.SetAsync("Key2".CreatePandoraRawKey(), "value2").ConfigureAwait(false);
         };
 
-        Because of = () =>
+        Because of = async () =>
         {
-            valueFromConsul1 = consul.Get("Key1".CreatePandoraRawKey());
-            valueFromConsul2 = consul.Get("key2".CreatePandoraRawKey());
+            valueFromConsul1 = await consul.GetAsync("Key1".CreatePandoraRawKey()).ConfigureAwait(false);
+            valueFromConsul2 = await consul.GetAsync("key2".CreatePandoraRawKey()).ConfigureAwait(false);
         };
 
         It should_get_value1 = () => valueFromConsul1.ShouldEqual("value1");

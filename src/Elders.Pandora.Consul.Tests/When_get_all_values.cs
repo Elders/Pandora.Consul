@@ -6,12 +6,12 @@ namespace Elders.Pandora.Consul.Tests
 {
     public class When_get_all_values
     {
-        Establish context = () =>
+        Establish context = async () =>
         {
             consul = ConsulForPandoraFactory.Create();
-            consul.Set("key".CreatePandoraRawKey(), "value");
-            consul.Set("key1".CreatePandoraRawKey(), "value1");
-            consul.Set("Key2".CreatePandoraRawKey(), "value2");
+            await consul.SetAsync("key".CreatePandoraRawKey(), "value").ConfigureAwait(false);
+            await consul.SetAsync("key1".CreatePandoraRawKey(), "value1").ConfigureAwait(false);
+            await consul.SetAsync("Key2".CreatePandoraRawKey(), "value2").ConfigureAwait(false);
 
             pandoraContext = new ApplicationContext("elders.pandora.consul.tests/test/*");
         };

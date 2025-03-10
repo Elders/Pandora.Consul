@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Elders.Pandora
 {
@@ -19,34 +20,32 @@ namespace Elders.Pandora
             _client = new ConsulClient(address);
         }
 
-        public bool Exists(string key)
+        public Task<bool> ExistsAsync(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
 
             string normalizedKey = key.ToLower().ToConsulKey();
 
-            return _client.ExistKeyValueAsync(normalizedKey).GetAwaiter().GetResult();
+            return _client.ExistKeyValueAsync(normalizedKey);
         }
 
-        public void Delete(string key)
+        public async Task DeleteAsync(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
 
             string normalizedKey = key.ToLower().ToConsulKey();
 
-            bool result = _client.DeleteKeyValueAsync(normalizedKey).GetAwaiter().GetResult();
-
+            bool result = await _client.DeleteKeyValueAsync(normalizedKey).ConfigureAwait(false);
             if (result == false)
                 throw new KeyNotFoundException("Unable to delete key/value with key: " + normalizedKey);
         }
 
-        public string Get(string key)
+        public async Task<string> GetAsync(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
             string normalizedKey = key.ToLower().ToConsulKey();
 
-            var result = _client.ReadKeyValueAsync(normalizedKey).GetAwaiter().GetResult();
-
+            ReadKeyValueResponse result = await _client.ReadKeyValueAsync(normalizedKey).ConfigureAwait(false);
             if (result is null)
                 throw new KeyNotFoundException("Unable to find value for key: " + normalizedKey);
 
@@ -74,7 +73,7 @@ namespace Elders.Pandora
             return newSettings;
         }
 
-        public void Set(string key, string value)
+        public async Task SetAsync(string key, string value)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
 
@@ -82,8 +81,7 @@ namespace Elders.Pandora
             {
                 string normalizedKey = key.ToLower().ToConsulKey();
 
-                var result = _client.CreateKeyValueAsync(normalizedKey, value).GetAwaiter().GetResult();
-
+                var result = await _client.CreateKeyValueAsync(normalizedKey, value).ConfigureAwait(false);
                 if (result == false)
                     throw new KeyNotFoundException("Unable to store key/value: " + normalizedKey + "  " + value);
             }
