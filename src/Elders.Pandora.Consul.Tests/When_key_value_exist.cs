@@ -4,21 +4,21 @@ namespace Elders.Pandora.Consul.Tests
 {
     public class When_key_value_exist
     {
-        Establish context = () =>
+        Establish context = async () =>
         {
             consul = ConsulForPandoraFactory.Create();
 
             //fist delete keys to be sure that didn't exists
-            consul.Delete("key1".CreatePandoraRawKey());
-            consul.Delete("key2".CreatePandoraRawKey());
+            await consul.DeleteAsync("key1".CreatePandoraRawKey()).ConfigureAwait(false);
+            await consul.DeleteAsync("key2".CreatePandoraRawKey()).ConfigureAwait(false);
 
-            consul.Set("key1".CreatePandoraRawKey(), "value1");
+            await consul.SetAsync("key1".CreatePandoraRawKey(), "value1").ConfigureAwait(false);
         };
 
-        Because of = () =>
+        Because of = async () =>
         {
-            key1Exist = consul.Exists("key1".CreatePandoraRawKey());
-            key2Exist = consul.Exists("key2".CreatePandoraRawKey());
+            key1Exist = await consul.ExistsAsync("key1".CreatePandoraRawKey()).ConfigureAwait(false);
+            key2Exist = await consul.ExistsAsync("key2".CreatePandoraRawKey()).ConfigureAwait(false);
         };
 
         It should_be_true = () => key1Exist.ShouldBeTrue();
