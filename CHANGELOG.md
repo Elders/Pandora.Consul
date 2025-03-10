@@ -1,3 +1,5 @@
+# [4.0.0](https://github.com/Elders/Pandora.Consul/compare/v3.3.1...v4.0.0) (2025-03-10)
+
 ## [3.3.1](https://github.com/Elders/Pandora.Consul/compare/v3.3.0...v3.3.1) (2025-02-21)
 
 
