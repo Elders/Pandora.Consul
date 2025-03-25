@@ -30,7 +30,7 @@
 
   <!--Nuget Dependencies-->
   <ItemGroup>
-    <PackageReference Include="Pandora" Version="4.0.0" />
+    <PackageReference Include="Pandora" Version="4.0.2" />
   </ItemGroup>
 
   <!--Debug Symbols-->
