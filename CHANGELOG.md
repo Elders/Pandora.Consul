@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/Elders/Pandora.Consul/compare/v4.0.0...v4.0.1) (2025-03-25)
+
+
+### Bug Fixes
+
+* Updates packages ([09b2ae8](https://github.com/Elders/Pandora.Consul/commit/09b2ae8c7eb886753b64bfb9293de122b21c29bd))
+
 # [4.0.0](https://github.com/Elders/Pandora.Consul/compare/v3.3.1...v4.0.0) (2025-03-10)
 
 ## [3.3.1](https://github.com/Elders/Pandora.Consul/compare/v3.3.0...v3.3.1) (2025-02-21)
